@@ -5,3 +5,4 @@ Flask-WTF
 WTForms
 certifi
 gunicorn
+urllib3
