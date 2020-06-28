@@ -4,3 +4,4 @@ flask_bootstrap
 flask_wtf
 wtforms
 certifi
+gunicorn
