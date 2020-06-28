@@ -1,1 +1,1 @@
-web: gunicorn kylo:app
+web: gunicorn app:app
