@@ -1,7 +1,7 @@
 pyngrok
-flask
-flask_bootstrap
-flask_wtf
-wtforms
+Flask
+Flask-Bootstrap
+Flask-WTF
+WTForms
 certifi
 gunicorn
