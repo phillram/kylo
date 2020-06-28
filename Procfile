@@ -1,1 +1,1 @@
-web: gunicorn --bind 0.0.0.0:5066 app:kylo
+web: gunicorn --bind 0.0.0.0:5066 app:app
