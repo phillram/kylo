@@ -28,7 +28,7 @@ app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 ####################################################################
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    form = create_message_form()
+    form = create_message_form(csrf_enabled=False)
     # Perform action when Submit is clicked
     if form.validate_on_submit():
         # Pull data from form to be used
