@@ -1,7 +1,7 @@
 ####################################################################
 # Importing requirements 
 ####################################################################
-import os, random, urllib3, json
+import os, urllib3, json
 from pyngrok import ngrok
 from flask import Flask, request, got_request_exception, render_template, Markup, flash
 from flask_bootstrap import Bootstrap
@@ -15,12 +15,10 @@ from wtforms.validators import DataRequired
 
 
 ####################################################################
-# Initializing Flask
-# Load it with bootstrap and set a totally secret key for CSRF
+# Initializing Flask with Bootstrap
 ####################################################################
 app = Flask(__name__)
 Bootstrap(app)
-app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 
 
 ####################################################################
