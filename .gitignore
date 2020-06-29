@@ -1,0 +1,4 @@
+# Ignoring files from git. They won't the most useful for this
+.vscode/
+venv/
+__pycache__/
