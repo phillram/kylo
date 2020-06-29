@@ -78,11 +78,15 @@ def index():
     # Renders the page
     return render_template('index.html', form = form)
 
+# Adding the route to ensure favicon is retreived
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('favicon.ico')
 
 ####################################################################
 # Functions
 ####################################################################
-# Use flask-wtf to create the fields for the form.
+# Use flask-wtf to create the fields for the form generation
 class create_message_form(FlaskForm):
     # Fields for user to fill out
     post_server_token = StringField('Your post_server_item token',
