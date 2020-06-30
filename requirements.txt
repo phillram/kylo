@@ -2,6 +2,7 @@ pyngrok
 Flask
 Flask-Bootstrap
 Flask-WTF
+flask_nav
 WTForms
 certifi
 gunicorn

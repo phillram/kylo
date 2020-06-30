@@ -1,9 +1,16 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+<!-- Title of the page -->
 {% block title %}
 Kylo
 {% endblock %}
+
+<!-- This creates the navbar at the top of the page -->
+{% block navbar %}
+{{nav.mynavbar.render()}}
+{% endblock %}
+
 
 {% block content %}
 <!-- This section returns any "flashes", which are used to display responses from the API calls -->

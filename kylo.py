@@ -6,6 +6,8 @@ from pyngrok import ngrok
 from flask import Flask, request, got_request_exception, render_template, Markup, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
+from flask_nav import Nav
+from flask_nav.elements import *
 from wtforms import StringField, TextField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 
@@ -17,15 +19,33 @@ from wtforms.validators import DataRequired
 ####################################################################
 # Initializing Flask
 # Load it with bootstrap and set a totally secret key for CSRF
+# Then initializing the top navbar and adding it to the page
 ####################################################################
 app = Flask(__name__)
 Bootstrap(app)
+nav = Nav()
+nav.init_app(app)
 app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 
 
 ####################################################################
 # Flask Routing 
 ####################################################################
+
+# Navbar for top of page
+@nav.navigation()
+def mynavbar():
+    return Navbar(
+        'Kylo',
+        View('Home', 'index'),
+    )
+
+# Favicon routing
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('favicon.ico')
+
+# Home Page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = create_message_form(meta={'csrf': False})
@@ -78,10 +98,6 @@ def index():
     # Renders the page
     return render_template('index.html', form = form)
 
-# Adding the route to ensure favicon is retreived
-@app.route('/favicon.ico')
-def favicon():
-    return app.send_static_file('favicon.ico')
 
 ####################################################################
 # Functions
