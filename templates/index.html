@@ -13,12 +13,7 @@ Kylo
 
 
 {% block content %}
-<!-- This section returns any "flashes", which are used to display responses from the API calls -->
-<div class="flashes">
-  {% for message in get_flashed_messages() %}
-    {{ message }}
-  {% endfor %}
-</div>
+
 
 <!-- Creating the form to display -->
 <div class="container">
@@ -28,5 +23,12 @@ Kylo
         <input class="btn btn-primary" type="submit" value="Submit">
         </dl>
     </form>
+</div>
+
+<!-- This section returns any "flashes", which are used to display responses from the API calls -->
+<div class="flashes">
+  {% for message in get_flashed_messages() %}
+    {{ message }}
+  {% endfor %}
 </div>
 {% endblock %}
