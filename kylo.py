@@ -138,8 +138,6 @@ def perform_api_request(method, endpoint, post_client_token, post_server_token,
     # There shouldn't be a case where flash_message isn't set (hopefully!)
     flash('Response from Rollbar: ' + flash_message, 'api_response')
 
-    # return 'banana'
-
 ####################################################################
 # Start Maul and run flask on set port
 ####################################################################
