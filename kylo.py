@@ -65,35 +65,9 @@ def index():
         # print('Form Message Type:' + message_type) 
         # print('Form Rollbar Message:' + rollbar_message) 
 
-        # Taking information from the form and creating a new item via Rollbar API
-        rollbar_response_raw = urllib3.PoolManager().request('POST', 
-            'https://api.rollbar.com/api/1/item/',
-            headers = {
-                'X-Rollbar-Access-Token' : post_server_token,
-            },
-            body = json.dumps({
-                'data':{
-                    'environment': rollbar_environment,
-                    'level': message_type,
-                    'body' : {
-                        'message' : {
-                            'body': rollbar_message,
-                            },
-                    },
-                }
-            })
-        )
-
-        # Parsing the API result above and saves the response to display in UI
-        rollbar_response = json.loads(rollbar_response_raw.data.decode('utf-8'))
-
-        if rollbar_response['err'] == 0 :
-            flash_message = Markup(rollbar_response['result'])
-        else:
-            flash_message = Markup(rollbar_response['message'])
-        
-        # There shouldn't be a case where flash_message isn't set (hopefully!)
-        flash('Response from Rollbar: ' + flash_message)
+        # POST the API request to create an item
+        perform_api_request('POST', post_client_token, post_server_token, 
+            rollbar_environment, message_type, rollbar_message)
 
     # Renders the page
     return render_template('index.html', form = form)
@@ -117,6 +91,48 @@ class create_message_form(FlaskForm):
     )
     rollbar_message = StringField('Message to send',
     )
+
+
+# Use the Rollbar API to perform an action
+# Method is the API method
+# Currently it's only creating items
+# I'll likely edit this to create an endpoint
+
+def perform_api_request(method, post_client_token, post_server_token, 
+    rollbar_environment, message_type, rollbar_message):
+
+
+    # Taking information from the form and creating a new item via Rollbar API
+    rollbar_response_raw = urllib3.PoolManager().request('POST', 
+        'https://api.rollbar.com/api/1/item/',
+        headers = {
+            'X-Rollbar-Access-Token' : post_server_token,
+        },
+        body = json.dumps({
+            'data':{
+                'environment': rollbar_environment,
+                'level': message_type,
+                'body' : {
+                    'message' : {
+                        'body': rollbar_message,
+                        },
+                },
+            }
+        })
+    )
+
+    # Parsing the API result above and saves the response to display in UI
+    rollbar_response = json.loads(rollbar_response_raw.data.decode('utf-8'))
+
+    if rollbar_response['err'] == 0 :
+        flash_message = Markup(rollbar_response['result'])
+    else:
+        flash_message = Markup(rollbar_response['message'])
+    
+    # There shouldn't be a case where flash_message isn't set (hopefully!)
+    flash('Response from Rollbar: ' + flash_message)
+
+    return 'banana'
 
 ####################################################################
 # Start Maul and run flask on set port
