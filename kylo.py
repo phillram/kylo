@@ -66,7 +66,7 @@ def index():
         # print('Form Rollbar Message:' + rollbar_message) 
 
         # POST the API request to create an item
-        perform_api_request('POST', post_client_token, post_server_token, 
+        perform_api_request('POST', 'item', post_client_token, post_server_token, 
             rollbar_environment, message_type, rollbar_message)
 
     # Renders the page
@@ -98,17 +98,17 @@ class create_message_form(FlaskForm):
 # Currently it's only creating items
 # I'll likely edit this to create an endpoint
 
-def perform_api_request(method, post_client_token, post_server_token, 
+def perform_api_request(method, endpoint, post_client_token, post_server_token, 
     rollbar_environment, message_type, rollbar_message):
 
+    # Building the API call
+    url = 'https://api.rollbar.com/api/1/' + endpoint + '/'
 
-    # Taking information from the form and creating a new item via Rollbar API
-    rollbar_response_raw = urllib3.PoolManager().request('POST', 
-        'https://api.rollbar.com/api/1/item/',
-        headers = {
+    header = {
             'X-Rollbar-Access-Token' : post_server_token,
-        },
-        body = json.dumps({
+        }
+
+    body = json.dumps({
             'data':{
                 'environment': rollbar_environment,
                 'level': message_type,
@@ -119,20 +119,26 @@ def perform_api_request(method, post_client_token, post_server_token,
                 },
             }
         })
-    )
+
+    # Add the information to display a cURL  in the UI
+    flash('Your not fully implemented to be API call:\n' + str(url) + str(header) + str(body) + '\n', 'api_request')
+
+    # Taking information from the form and creating a new item via Rollbar API
+    rollbar_response_raw = urllib3.PoolManager().request(method, url, headers=header, body=body)
 
     # Parsing the API result above and saves the response to display in UI
     rollbar_response = json.loads(rollbar_response_raw.data.decode('utf-8'))
 
+    # Check if it's an error response or not, then display it in the UI
     if rollbar_response['err'] == 0 :
         flash_message = Markup(rollbar_response['result'])
     else:
         flash_message = Markup(rollbar_response['message'])
     
     # There shouldn't be a case where flash_message isn't set (hopefully!)
-    flash('Response from Rollbar: ' + flash_message)
+    flash('Response from Rollbar: ' + flash_message, 'api_response')
 
-    return 'banana'
+    # return 'banana'
 
 ####################################################################
 # Start Maul and run flask on set port

@@ -26,9 +26,25 @@ Kylo
 </div>
 
 <!-- This section returns any "flashes", which are used to display responses from the API calls -->
-<div class="flashes">
-  {% for message in get_flashed_messages() %}
-    {{ message }}
-  {% endfor %}
-</div>
+{% with messages = get_flashed_messages(category_filter=["api_request"]) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+{% with messages = get_flashed_messages(category_filter=["api_response"]) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
 {% endblock %}
