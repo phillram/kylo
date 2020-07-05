@@ -16,13 +16,29 @@ from wtforms.validators import DataRequired
 ####################################################################
 # Use flask-wtf to generate forms
 ####################################################################
-class create_message_form(FlaskForm):
+class home_page(FlaskForm):
     # Fields for user to fill out
-    post_server_token = StringField('Your post_server_item token',
+    # post_server_token = StringField('Your post_server_item token',
+    #     [ DataRequired() ]
+    # )
+    # post_client_token = StringField('Your post_client_item token',
+    # )
+    # rollbar_environment = StringField('Environment',
+    # )
+    # message_type = SelectField( 'Message Type',
+    #     choices=[ ('critical', 'Critical'), ('debug', 'Debug'),('error', 'Error'),('info', 'Info'),('warning', 'Warning') ]
+    # )
+    rollbar_message = StringField('Message to send',
+    )
+
+
+class create_item(FlaskForm):
+    # Fields for user to fill out
+    api_token = StringField('Your post_server_item token',
         [ DataRequired() ]
     )
-    post_client_token = StringField('Your post_client_item token',
-    )
+    # api_token = StringField('Your post_client_item token',
+    # )
     rollbar_environment = StringField('Environment',
     )
     message_type = SelectField( 'Message Type',
@@ -35,14 +51,14 @@ class create_message_form(FlaskForm):
 ####################################################################
 # Use the Rollbar API
 ####################################################################
-def perform_api_request(method, endpoint, post_client_token, post_server_token, 
+def perform_api_request(method, endpoint, api_token, 
     rollbar_environment, message_type, rollbar_message):
 
     # Building the API call
     url = 'https://api.rollbar.com/api/1/' + endpoint + '/'
 
     header = {
-            'X-Rollbar-Access-Token' : post_server_token,
+            'X-Rollbar-Access-Token' : api_token,
         }
 
     body = json.dumps({

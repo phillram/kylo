@@ -29,6 +29,8 @@ nav = Nav()
 nav.init_app(app)
 app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 
+# Defaulting the homepage view
+mode = 'create'
 
 ####################################################################
 # Flask Routing 
@@ -39,7 +41,9 @@ app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 def mynavbar():
     return Navbar(
         'Kylo',
+        Link('Github', 'https://github.com/phillram/kylo'),
         View('Create Item', 'index'),
+        View('View Item', 'index'),
     )
 
 # Favicon routing
@@ -50,28 +54,48 @@ def favicon():
 # Home Page
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    form = create_message_form(meta={'csrf': False})
-    # Perform action when Submit is clicked
-    if form.validate_on_submit():
-        # Pull data from form to be used
-        post_client_token = form.post_client_token.data
-        post_server_token = form.post_server_token.data
-        rollbar_environment = form.rollbar_environment.data
-        message_type = form.message_type.data
-        rollbar_message = form.rollbar_message.data
+    if(mode == 'create'):
+        print('you creating')
+        print('mode is:' + mode)
+        form = create_item(meta={'csrf': False})
+        # Perform action when Submit is clicked
+        if form.validate_on_submit():
+            # Pull data from form to be used
+            api_token = form.api_token.data
+            rollbar_environment = form.rollbar_environment.data
+            message_type = form.message_type.data
+            rollbar_message = form.rollbar_message.data
 
-        # Confirming values recieved from form
-        # print('Form Post Client Token:' + post_client_token) 
-        # print('Form Post Server Token:' + post_server_token)
-        # print('Form Rollbar Environment Type:' + rollbar_environment) 
-        # print('Form Message Type:' + message_type) 
-        # print('Form Rollbar Message:' + rollbar_message) 
+            # POST the API request to create an item
+            perform_api_request('POST', 'item', api_token, 
+                rollbar_environment, message_type, rollbar_message)
 
-        # POST the API request to create an item
-        perform_api_request('POST', 'item', post_client_token, post_server_token, 
-            rollbar_environment, message_type, rollbar_message)
+    if(mode == 'view'):
+        print('you viewing')
+        print('mode is:' + mode)
+        form = create_item(meta={'csrf': False})
+        # Perform action when Submit is clicked
+        if form.validate_on_submit():
+            # Pull data from form to be used
+            api_token = form.post_server_token.data
+            rollbar_environment = form.rollbar_environment.data
+            message_type = form.message_type.data
+            rollbar_message = form.rollbar_message.data
+
+            # POST the API request to create an item
+            perform_api_request('POST', 'item', api_token, 
+                rollbar_environment, message_type, rollbar_message)
+
+    # if(mode == 'create'):
+
+    # if(mode == 'create'):
 
     # Renders the page
+    return render_template('index.html', form = form)
+
+    print('you excepting')
+    print('mode is:' + mode)
+    form = home_page(meta={'csrf': False})
     return render_template('index.html', form = form)
 
 ####################################################################
