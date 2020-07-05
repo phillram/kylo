@@ -29,9 +29,6 @@ nav = Nav()
 nav.init_app(app)
 app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 
-# Defaulting the homepage view
-mode = 'create'
-
 ####################################################################
 # Flask Routing 
 ####################################################################
@@ -42,8 +39,6 @@ def mynavbar():
     return Navbar(
         'Kylo',
         Link('Github', 'https://github.com/phillram/kylo'),
-        View('Create Item', 'index'),
-        View('View Item', 'index'),
     )
 
 # Favicon routing
@@ -54,49 +49,22 @@ def favicon():
 # Home Page
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if(mode == 'create'):
-        print('you creating')
-        print('mode is:' + mode)
-        form = create_item(meta={'csrf': False})
-        # Perform action when Submit is clicked
-        if form.validate_on_submit():
-            # Pull data from form to be used
-            api_token = form.api_token.data
-            rollbar_environment = form.rollbar_environment.data
-            message_type = form.message_type.data
-            rollbar_message = form.rollbar_message.data
+    form = create_item(meta={'csrf': False})
+    # Perform action when Submit is clicked
+    if form.validate_on_submit():
+        # Pull data from form to be used
+        endpoint = form.endpoint.data
+        api_token = form.api_token.data
+        rollbar_environment = form.rollbar_environment.data
+        message_type = form.message_type.data
+        rollbar_message = form.rollbar_message.data
 
-            # POST the API request to create an item
-            perform_api_request('POST', 'item', api_token, 
-                rollbar_environment, message_type, rollbar_message)
+        # POST the API request to create an item
+        perform_api_request('POST', endpoint, api_token, 
+            rollbar_environment, message_type, rollbar_message)
 
-    if(mode == 'view'):
-        print('you viewing')
-        print('mode is:' + mode)
-        form = create_item(meta={'csrf': False})
-        # Perform action when Submit is clicked
-        if form.validate_on_submit():
-            # Pull data from form to be used
-            api_token = form.post_server_token.data
-            rollbar_environment = form.rollbar_environment.data
-            message_type = form.message_type.data
-            rollbar_message = form.rollbar_message.data
-
-            # POST the API request to create an item
-            perform_api_request('POST', 'item', api_token, 
-                rollbar_environment, message_type, rollbar_message)
-
-    # if(mode == 'create'):
-
-    # if(mode == 'create'):
-
-    # Renders the page
     return render_template('index.html', form = form)
 
-    print('you excepting')
-    print('mode is:' + mode)
-    form = home_page(meta={'csrf': False})
-    return render_template('index.html', form = form)
 
 ####################################################################
 # Start Kylo and run flask on set port

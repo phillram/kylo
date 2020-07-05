@@ -9,36 +9,21 @@ import json
 import urllib3
 from flask import flash, Markup
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextField, SubmitField, SelectField
+from wtforms import *
 from wtforms.validators import DataRequired
 
 
 ####################################################################
 # Use flask-wtf to generate forms
 ####################################################################
-class home_page(FlaskForm):
-    # Fields for user to fill out
-    # post_server_token = StringField('Your post_server_item token',
-    #     [ DataRequired() ]
-    # )
-    # post_client_token = StringField('Your post_client_item token',
-    # )
-    # rollbar_environment = StringField('Environment',
-    # )
-    # message_type = SelectField( 'Message Type',
-    #     choices=[ ('critical', 'Critical'), ('debug', 'Debug'),('error', 'Error'),('info', 'Info'),('warning', 'Warning') ]
-    # )
-    rollbar_message = StringField('Message to send',
-    )
-
-
 class create_item(FlaskForm):
     # Fields for user to fill out
-    api_token = StringField('Your post_server_item token',
+    endpoint = RadioField( 'Function',
+        choices=[ ('item', 'Create Item'), ('items', 'List Items')], default = 'item'
+    )
+    api_token = StringField('Your API token',
         [ DataRequired() ]
     )
-    # api_token = StringField('Your post_client_item token',
-    # )
     rollbar_environment = StringField('Environment',
     )
     message_type = SelectField( 'Message Type',
