@@ -20,10 +20,14 @@ from flask_nav.elements import *
 
 
 ####################################################################
-# Initializing Rollbar
+# Initializing & test Rollbar
 # To catch errors that Kylo throws
 ####################################################################
 rollbar.init(os.environ['ROLLBAR_POST_SERVER_TOKEN'])
+try:
+    100 / 0
+except:
+    rollbar.report_exc_info(sys.exc_info())
 
 ####################################################################
 # Initializing Flask
@@ -39,8 +43,6 @@ app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 ####################################################################
 # Flask Routing 
 ####################################################################
-div_by_zero = 100 / 0
-
 
 # Navbar for top of page
 @nav.navigation()
