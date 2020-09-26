@@ -39,6 +39,8 @@ app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 ####################################################################
 # Flask Routing 
 ####################################################################
+div_by_zero = 100 / 0
+
 
 # Navbar for top of page
 @nav.navigation()
