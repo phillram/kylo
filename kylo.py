@@ -7,7 +7,7 @@
 ####################################################################
 from kylo_functions import *
 
-import os, random
+import os, random, rollbar
 from pyngrok import ngrok
 from flask import Flask, request, got_request_exception, render_template
 from flask_bootstrap import Bootstrap
@@ -17,6 +17,13 @@ from flask_nav.elements import *
 # Logging imports you may not need
 # import logging, certifi
 # import ssl as ssl_lib
+
+
+####################################################################
+# Initializing Rollbar
+# To catch errors that Kylo throws
+####################################################################
+rollbar.init(os.environ['ROLLBAR_POST_SERVER_TOKEN'])
 
 ####################################################################
 # Initializing Flask

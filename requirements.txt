@@ -7,3 +7,4 @@ WTForms
 certifi
 gunicorn
 urllib3
+rollbar
