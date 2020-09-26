@@ -24,10 +24,7 @@ from flask_nav.elements import *
 # To catch errors that Kylo throws
 ####################################################################
 rollbar.init(os.environ['ROLLBAR_POST_SERVER_TOKEN'])
-try:
-    100 / 0
-except:
-    rollbar.report_exc_info(sys.exc_info())
+rollbar.report_message('Rollbar is reporting properly')
 
 ####################################################################
 # Initializing Flask
