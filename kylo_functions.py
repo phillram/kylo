@@ -67,12 +67,12 @@ def perform_api_request(method, endpoint, api_token,
     # Parsing the API result above and saves the response to display in UI
     rollbar_response = json.loads(rollbar_response_raw.data.decode('utf-8'))
 
-    # Check if it's an error response or not, then display it in the UI
+    # Check if it's an error response or not, then display error messages or links to the ocurrence
     if rollbar_response['err'] == 0 :
         flash_message = Markup(rollbar_response['result'])
+        flash('Response from Rollbar: ' + flash_message, 'api_response')
+        flash('Your occurrence can be found here: https://rollbar.com/occurrence/uuid/?uuid=' + rollbar_response['uuid'], 'api_response')
     else:
         flash_message = Markup(rollbar_response['message'])
-    
-    # There shouldn't be a case where flash_message isn't set (hopefully!)
-    flash('Response from Rollbar: ' + flash_message, 'api_response')
+        flash('Response from Rollbar: ' + flash_message, 'api_response')
 
