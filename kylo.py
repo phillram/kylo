@@ -27,8 +27,8 @@ from flask_nav.elements import *
 def init_rollbar():
     # """init rollbar module"""
     rollbar.init(
-        os.environ['ROLLBAR_POST_SERVER_TOKEN'],
-        os.environ['ROLLBAR_ENVIRONMENT']
+        os.environ['ROLLBAR_POST_SERVER_TOKEN'], 'Heroku',
+        # os.environ['ROLLBAR_ENVIRONMENT']
         # server root directory, makes tracebacks prettier
         # root=os.path.dirname(os.path.realpath(__file__)),
         # flask already sets up logging
