@@ -36,12 +36,11 @@ app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 ####################################################################
 @app.before_first_request
 def init_rollbar():
-    # """init rollbar module"""
     rollbar.init(
-        os.environ['ROLLBAR_POST_SERVER_TOKEN'], 'Heroku',
-        # os.environ['ROLLBAR_ENVIRONMENT']
-        # server root directory, makes tracebacks prettier
-        # root=os.path.dirname(os.path.realpath(__file__)),
+        os.environ['ROLLBAR_POST_SERVER_TOKEN'],
+        os.environ['ROLLBAR_ENVIRONMENT'],
+        # Server root directory to make tracebacks prettier
+        root=os.path.dirname(os.path.realpath(__file__)),
         # flask already sets up logging
         # allow_logging_basic_config=False)
     )
