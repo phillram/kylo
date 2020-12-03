@@ -23,8 +23,19 @@ from flask_nav.elements import *
 # Initializing & test Rollbar
 # To catch errors that Kylo throws
 ####################################################################
-rollbar.init(os.environ['ROLLBAR_POST_SERVER_TOKEN'])
-rollbar.report_message('Kylo has started up', 'info')
+@app.before_first_request
+def init_rollbar():
+    # """init rollbar module"""
+    rollbar.init(
+        os.environ['ROLLBAR_POST_SERVER_TOKEN'],
+        os.environ['ROLLBAR_ENVIRONMENT']
+        # server root directory, makes tracebacks prettier
+        # root=os.path.dirname(os.path.realpath(__file__)),
+        # flask already sets up logging
+        # allow_logging_basic_config=False)
+    )
+
+    rollbar.report_message('Kylo has started up', 'info')
 
 ####################################################################
 # Initializing Flask
