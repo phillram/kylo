@@ -20,6 +20,17 @@ from flask_nav.elements import *
 
 
 ####################################################################
+# Initializing Flask
+# Load it with bootstrap and set a totally secret key for CSRF
+# Then initializing the top navbar and adding it to the page
+####################################################################
+app = Flask(__name__)
+Bootstrap(app)
+nav = Nav()
+nav.init_app(app)
+app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
+
+####################################################################
 # Initializing & test Rollbar
 # To catch errors that Kylo throws
 ####################################################################
@@ -36,17 +47,6 @@ def init_rollbar():
     )
 
     rollbar.report_message('Kylo has started up', 'info')
-
-####################################################################
-# Initializing Flask
-# Load it with bootstrap and set a totally secret key for CSRF
-# Then initializing the top navbar and adding it to the page
-####################################################################
-app = Flask(__name__)
-Bootstrap(app)
-nav = Nav()
-nav.init_app(app)
-app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 
 ####################################################################
 # Flask Routing 
