@@ -24,7 +24,7 @@ from flask_nav.elements import *
 # To catch errors that Kylo throws
 ####################################################################
 # @app.before_first_request
-def init_rollbar():
+def initialize_rollbar():
     rollbar.init(
         os.environ['ROLLBAR_POST_SERVER_TOKEN'],
         os.environ['ROLLBAR_ENVIRONMENT'],
@@ -48,13 +48,6 @@ nav.init_app(app)
 app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 
 
-
-
-    # # Checking User IP on Heroku
-    # if os.environ['HEROKU'] == 'True':
-    #     user_ips = request.headers.getlist("X-Forwarded-For")
-    #     print('user_ips is: ' + user_ips)
-
 ####################################################################
 # Flask Routing 
 ####################################################################
@@ -75,6 +68,12 @@ def favicon():
 # Home Page
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    # Checking User IP on Heroku
+    if os.environ['HEROKU'] == 'True':
+        user_ips = request.headers.getlist("X-Forwarded-For")
+        print('user_ips is: ' + user_ips)
+
+    
     form = create_item(meta={'csrf': False})
     # Perform action when Submit is clicked
     if form.validate_on_submit():
