@@ -24,17 +24,17 @@ from flask_nav.elements import *
 # To catch errors that Kylo throws
 ####################################################################
 # @app.before_first_request
-def initialize_rollbar():
-    rollbar.init(
-        os.environ['ROLLBAR_POST_SERVER_TOKEN'],
-        os.environ['ROLLBAR_ENVIRONMENT'],
-        # Server root directory to make tracebacks prettier
-        root=os.path.dirname(os.path.realpath(__file__)),
-        # flask already sets up logging
-        # allow_logging_basic_config=False)
-    )
+# def initialize_rollbar():
+rollbar.init(
+    os.environ['ROLLBAR_POST_SERVER_TOKEN'],
+    os.environ['ROLLBAR_ENVIRONMENT'],
+    # Server root directory to make tracebacks prettier
+    root=os.path.dirname(os.path.realpath(__file__)),
+    # flask already sets up logging
+    # allow_logging_basic_config=False)
+)
 
-    rollbar.report_message('Kylo has started up', 'info')
+rollbar.report_message('Kylo has started up', 'info')
 
 ####################################################################
 # Initializing Flask
@@ -72,6 +72,7 @@ def index():
     if os.environ['HEROKU'] == 'True':
         user_ips = request.headers.getlist("X-Forwarded-For")
         print('user_ips is: ' + user_ips)
+        sys.stdout.flush()
 
     
     form = create_item(meta={'csrf': False})
