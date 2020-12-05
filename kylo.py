@@ -20,21 +20,10 @@ from flask_nav.elements import *
 
 
 ####################################################################
-# Initializing Flask
-# Load it with bootstrap and set a totally secret key for CSRF
-# Then initializing the top navbar and adding it to the page
-####################################################################
-app = Flask(__name__)
-Bootstrap(app)
-nav = Nav()
-nav.init_app(app)
-app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
-
-####################################################################
 # Initializing & test Rollbar
 # To catch errors that Kylo throws
 ####################################################################
-@app.before_first_request
+# @app.before_first_request
 def init_rollbar():
     rollbar.init(
         os.environ['ROLLBAR_POST_SERVER_TOKEN'],
@@ -47,11 +36,24 @@ def init_rollbar():
 
     rollbar.report_message('Kylo has started up', 'info')
 
+####################################################################
+# Initializing Flask
+# Load it with bootstrap and set a totally secret key for CSRF
+# Then initializing the top navbar and adding it to the page
+####################################################################
+app = Flask(__name__)
+Bootstrap(app)
+nav = Nav()
+nav.init_app(app)
+app.config['SECRET_KEY'] = str(random.randint(0,100000000000))
 
-    # Checking User IP on Heroku
-    if os.environ['HEROKU'] == 'True':
-        user_ips = request.headers.getlist("X-Forwarded-For")
-        print('user_ips is: ' + user_ips)
+
+
+
+    # # Checking User IP on Heroku
+    # if os.environ['HEROKU'] == 'True':
+    #     user_ips = request.headers.getlist("X-Forwarded-For")
+    #     print('user_ips is: ' + user_ips)
 
 ####################################################################
 # Flask Routing 
