@@ -49,7 +49,7 @@ def init_rollbar():
 
 
     # Checking User IP on Heroku
-    if os.environ['HEROKU'] == 'True'
+    if os.environ['HEROKU'] == 'True':
         user_ips = request.headers.getlist("X-Forwarded-For")
         print('user_ips is: ' + user_ips)
 
