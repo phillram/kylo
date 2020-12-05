@@ -47,6 +47,12 @@ def init_rollbar():
 
     rollbar.report_message('Kylo has started up', 'info')
 
+
+    # Checking User IP on Heroku
+    if os.environ['HEROKU'] == 'True'
+        user_ips = request.headers.getlist("X-Forwarded-For")
+        print('user_ips is: ' + user_ips)
+
 ####################################################################
 # Flask Routing 
 ####################################################################
